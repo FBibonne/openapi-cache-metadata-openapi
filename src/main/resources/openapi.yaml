@@ -1,0 +1,282 @@
+openapi: 3.0.3
+info:
+  title: API RMéS
+  description: |-
+    This file describes the RMéS API which stands for the API for the metadata of ![INSEE](https://insee.fr/logo.png)
+    
+    The history of this files fits the history of the API which you can find [here](https://github.com/InseeFR/Metadata-API-OAS) : on this project you can request new endpoints or modifying existing endpoints 
+# Version bidon à surcharger par le process de build
+  version: 0.0.1-SNAPSHOT
+# Par défaut l'url publique mais à modifier dynamiquement lorsque le fichier est servi par une instance de metadata API
+# début sections ajoutées
+  contact:
+    name: Team RMéS
+    email: metadonnees@insee.fr
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# fin sections ajoutées
+servers:
+  - url: http://qfrmeswnczlht01.ad.insee.intra/
+tags:
+  - name: nomenclatures
+    description: Nomenclatures API
+paths:
+  /codes/cj/n2/{codeCJ}:
+    get:
+      tags:
+        - nomenclatures
+      summary: Informations sur une catégorie juridique de niveau 2
+      operationId: getcjn2
+      parameters:
+        - $ref: '#/components/parameters/codeCJ2'
+      responses: 
+        '200': 
+          $ref: '#/components/responses/200cjn2'
+        '400': 
+          $ref: '#/components/responses/400'
+        '401': 
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500':
+          $ref: '#/components/responses/500'
+  /codes/cj/n3/{code}:
+    get:
+      tags:
+        - nomenclatures
+      summary: Informations sur une catégorie juridique de niveau 3
+      operationId: getcjn3
+      parameters:
+        - $ref: '#/components/parameters/codeCJ4'
+      responses:
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500':
+          $ref: '#/components/responses/500'
+        '200':
+          $ref: '#/components/responses/200cjn3'
+  /codes/nafr2/classe/{code}:
+    get:
+      tags:
+        - nomenclatures
+      summary: Informations sur une classe de la NAF rév.2 identifiée par son code
+      operationId: getnafr2n4
+      parameters:
+        - $ref: '#/components/parameters/codeClasseNaf'
+      responses:
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500':
+          $ref: '#/components/responses/500'
+        '200':
+          $ref: '#/components/responses/200ClasseNaf'
+
+  /codes/nafr2/sousClasse/{code}:
+    get:
+      tags:
+        - nomenclatures
+      summary: Informations sur une sous-classe de la NAF rév.2 identifiée par son code
+      operationId: getnafr2n5
+      parameters:
+         - $ref: '#/components/parameters/codeSousClasseNaf'
+      responses:
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500':
+          $ref: '#/components/responses/500'
+        '200':
+          $ref: '#/components/responses/200SousClasseNaf'
+components:
+  schemas:
+    CategorieJuridiqueNiveauII:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '10'
+          xml:
+            attribute: true
+        uri:
+          type: string
+          example: http://id.insee.fr/codes/cj/n2/10
+          xml:
+            attribute: true
+        intitule:
+          type: string
+          example: Entrepreneur individuel
+          xml:
+            name: Intitule
+      description: Objet représentant une catégorie juridique (niveau 2)
+      xml:
+        name: CategorieJuridiqueNiveauII
+    CategorieJuridiqueNiveauIII:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '7112'
+          xml:
+            attribute: true
+        uri:
+          type: string
+          example: http://id.insee.fr/codes/cj/n3/7112
+          xml:
+            attribute: true
+        intitule:
+          type: string
+          example: Autorité administrative ou publique indépendante
+          xml:
+            name: Intitule
+      description: Objet représentant une catégorie juridique détaillée (niveau 3)
+      xml:
+        name: CategorieJuridiqueNiveauIII
+    ClasseNAF2008:
+      type: object
+      properties:
+        code:
+          type: string
+          example: '46.66'
+          xml:
+            attribute: true
+        uri:
+          type: string
+          example: http://id.insee.fr/codes/nafr2/classe/46.66
+          xml:
+            attribute: true
+        intitule:
+          type: string
+          example: Commerce de gros d'autres machines et équipements de bureau
+          xml:
+            name: Intitule
+      description: Objet représentant une classe de la NAF 2008 (rév. 2)
+      xml:
+        name: ClasseNAF2008
+    SousClasseNAF2008:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 27.40Z
+          xml:
+            attribute: true
+        uri:
+          type: string
+          example: http://id.insee.fr/codes/nafr2/sousClasse/27.40Z
+          xml:
+            attribute: true
+        intitule:
+          type: string
+          example: Fabrication d'appareils d'éclairage électrique
+          xml:
+            name: Intitule
+      description: Objet représentant une sous-classe de la NAF 2008 (rév. 2)
+      xml:
+        name: SousClasseNAF2008
+  parameters:
+    codeCJ2:
+      name: codeCJ
+      in: path
+      description: Identifiant de la catégorie juridique de niveau 2 (deux chiffres)
+      required: true
+      schema:
+        pattern: '[0-9]{2}'
+        type: string
+      example: 10
+    codeCJ4:
+      name: code
+      in: path
+      description: Identifiant de la catégorie juridique de niveau 3 (quatre chiffres)
+      required: true
+      schema:
+        pattern: '[0-9]{4}'
+        type: string
+      example: 7112
+    codeClasseNaf:
+      name: code
+      in: path
+      description: Code de la classe (deux chiffres, un point, deux chiffres)
+      required: true
+      schema:
+        pattern: '[0-9]{2}\.[0-9]{2}'
+        type: string
+      example: 46.66
+    codeSousClasseNaf:
+      name: code
+      in: path
+      description: Code de la sous-classe (deux chiffres, un point, deux chiffres et une lettre majuscule)
+      required: true
+      schema:
+        pattern: '[0-9]{2}\.[0-9]{2}[A-Z]'
+        type: string
+      example: 33.16Z
+  responses:
+    200cjn3:
+      description: Opération réussie
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategorieJuridiqueNiveauIII'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CategorieJuridiqueNiveauIII'
+    200cjn2:
+      description: Opération réussie
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CategorieJuridiqueNiveauII'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CategorieJuridiqueNiveauII'
+    200SousClasseNaf:
+      description: Opération réussie
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SousClasseNAF2008'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/SousClasseNAF2008'
+    200ClasseNaf:
+      description: Opération réussie
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ClasseNAF2008'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/ClasseNAF2008'
+    400:
+      description: La syntaxe de la requête est incorrecte
+    401:
+      description: Une authentification est nécessaire pour accéder à la ressource
+    404:
+      description: Ressource non trouvée
+    406:
+      description: L'en-tête HTTP 'Accept' contient une valeur non acceptée
+    500:
+      description: Erreur interne du serveur
