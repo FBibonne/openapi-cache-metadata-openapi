@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>bibonne.exp.oas-cache</groupId>
+    <artifactId>metadata-oas</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <openapitools-generator.version>7.0.1</openapitools-generator.version>
+        <openapitools-nullable.version>0.2.6</openapitools-nullable.version>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${openapitools-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>9.1.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapitools-generator.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <modelPackage>bibonne.exp.oascache.metadata.model</modelPackage>
+                            <generateApis>false</generateApis>
+                            <generateModels>true</generateModels>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <configOptions>
+                                <documentationProvider>none</documentationProvider>
+                                <annotationLibrary>none</annotationLibrary>
+                                <requestMappingMode>none</requestMappingMode>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useOptional>true</useOptional>
+                                <useSwaggerUI>false</useSwaggerUI>
+                            </configOptions>
+                            <!-- Generate client
+                            <generatorName>java</generatorName>
+                            <library>feign</library>
+                            <generateModels>true</generateModels>
+                            <generateApis>false</generateApis>
+                            <configOptions>
+                                <serializationLibrary>jackson</serializationLibrary>
+                            </configOptions>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
