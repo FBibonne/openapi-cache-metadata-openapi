@@ -32,13 +32,13 @@ paths:
         '200':
           $ref: '#/components/responses/Territoire200'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/IncorrectRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '406':
-          $ref: '#/components/responses/406'
+          $ref: '#/components/responses/NotAcceptable'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/ServerError'
   /geo/departement/{code}:
     get:
       tags:
@@ -52,13 +52,13 @@ paths:
         '200':
           $ref: '#/components/responses/Departement200'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/IncorrectRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '406':
-          $ref: '#/components/responses/406'
+          $ref: '#/components/responses/NotAcceptable'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/ServerError'
   #  /geo/cantons:
   /geo/departement/{code}/descendants:
     get:
@@ -66,7 +66,7 @@ paths:
         - geographie
       summary: 'Informations concernant les territoires inclus dans le departement'
       operationId: 'getcogdepdesc'
-      "parameters":
+      parameters:
         - $ref: '#/components/parameters/codeDepInPath'
         - $ref: '#/components/parameters/dateActive'
         - $ref: '#/components/parameters/filtreNom'
@@ -75,13 +75,13 @@ paths:
         '200':
           $ref: '#/components/responses/Descendants200'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/IncorrectRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '406':
-          $ref: '#/components/responses/406'
+          $ref: '#/components/responses/NotAcceptable'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/ServerError'
   /geo/communes:
     get:
       tags:
@@ -97,13 +97,13 @@ paths:
         '200':
           $ref: '#/components/responses/CommuneListe200'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/IncorrectRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '406':
-          $ref: '#/components/responses/406'
+          $ref: '#/components/responses/NotAcceptable'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/ServerError'
   # utiliser responses.200.links.getcogcom.operationID : getcogcom
   /geo/commune/{code}:
     get:
@@ -118,13 +118,13 @@ paths:
         '200':
           $ref: '#/components/responses/Commune200'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/IncorrectRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '406':
-          $ref: '#/components/responses/406'
+          $ref: '#/components/responses/NotAcceptable'
         '500':
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/ServerError'
 components:
   parameters:
     codeTerritoireInPath:
@@ -215,22 +215,22 @@ components:
         intituleSansArticle: 'Abergement-de-Varey'
         intitule: 'L''Abergement-de-Varey'
   responses:
-    400:
+    IncorrectRequest:
       description: 'La syntaxe de la requête est incorrecte'
     NotFound:
       description: 'Ressource non trouvée'
-    406:
+    NotAcceptable:
       description: 'L''en-tête HTTP ''Accept'' contient une valeur non acceptée'
-    500:
+    ServerError:
       description: 'Erreur interne du serveur'
     Descendants200:
       description: 'Opération réussie pour les descendants d''un territoire'
-      links:
-        territoire:
-          operationId: getTerritoireByTypeAndCode
-          parameters:
-            typeTerritoire: $response.body#/type
-            code: $response.body#/code
+#      links:
+#        territoire:
+#          operationId: getTerritoireByTypeAndCode
+#          parameters:
+#            typeTerritoire: $response.body#/type
+#            code: $response.body#/code
       content:
         application/json:
           schema:
@@ -430,7 +430,15 @@ components:
         code:
           $ref: '#/components/schemas/CodeDep'
         chefLieu:
-          $ref: '#/components/schemas/TerritoireRef'
+          type: object
+          properties:
+            ###### Properties copied from TerritoireRef ! ########
+            code:
+              type: string
+              description: 'Code identifiant un teritoire quelconque'
+            type:
+              $ref: '#/components/schemas/TypeEnum'
+          #######################################################
           xml:
             name: ChefLieu
     TerritoireRef:
