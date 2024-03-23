@@ -87,7 +87,7 @@ paths:
       tags:
         - geographie
       description: |-
-        Informations sur toutes les communes actives à la date donnée. Par défaut, c’est la date courante.
+        Informations sur toutes les communes actives à la date donnée. Par défaut, c'est la date courante.
       operationId: 'getcogcomliste'
       parameters:
         - $ref: '#/components/parameters/dateActive'
@@ -158,7 +158,7 @@ components:
     dateActive:
       in: query
       description: |-
-        Filtre pour renvoyer la commune active à la date donnée. Par défaut, c’est la date courante. (Format : 'AAAA-MM-JJ')
+        Filtre pour renvoyer la commune active à la date donnée. Par défaut, c'est la date courante. (Format : 'AAAA-MM-JJ')
       name: date
       schema:
         type: 'string'
@@ -180,7 +180,7 @@ components:
       name: 'com'
       in: 'query'
       description: |-
-        Sélectionner `true` pour inclure les collectivités d’outre-mer
+        Sélectionner `true` pour inclure les collectivités d'outre-mer
       schema:
         type: boolean
         default: false
@@ -267,18 +267,10 @@ components:
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Commune'
-              - $ref: '#/components/schemas/Departement'
-            discriminator:
-              propertyName: type
+            $ref: '#/components/schemas/Territoire'
         application/xml:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Commune'
-              - $ref: '#/components/schemas/Departement'
-            discriminator:
-              propertyName: type
+            $ref: '#/components/schemas/Territoire'
           examples:
             défaut:
               $ref: '#/components/examples/CommuneXML'
@@ -298,8 +290,8 @@ components:
             défaut:
               $ref: '#/components/examples/Commune'
   schemas:
-    Territoire200:
-      oneOf:
+    Territoire:
+      allOf:
         - $ref: '#/components/schemas/Commune'
         - $ref: '#/components/schemas/Departement'
       discriminator:
@@ -336,7 +328,7 @@ components:
         - Departement
         - Region
       example: 'Canton'
-    Territoire:
+    TerritoireBase:
       type: object
       properties:
         ###### Properties copied from TerritoireRef ! ########
@@ -354,7 +346,7 @@ components:
           example: 'http://id.insee.fr/geo/commune/43018c68-c278-433a-b285-3531e8d5347e'
         dateCreation:
           type: string
-          description: 'Date de création du territoire s''il n’existait pas au premier COG du 1er janvier 1943'
+          description: 'Date de création du territoire s''il n''existait pas au premier COG du 1er janvier 1943'
           format: date
           example: '2016-01-20'
           xml:
@@ -425,7 +417,7 @@ components:
       xml:
         name: Departement
       allOf:
-        - $ref: '#/components/schemas/Territoire'
+        - $ref: '#/components/schemas/TerritoireBase'
       properties:
         code:
           $ref: '#/components/schemas/CodeDep'
@@ -456,7 +448,7 @@ components:
       xml:
         name: Commune
       allOf:
-        - $ref: '#/components/schemas/Territoire'
+        - $ref: '#/components/schemas/TerritoireBase'
       properties:
         code:
           $ref: '#/components/schemas/CodeCom'
