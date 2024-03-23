@@ -291,7 +291,7 @@ components:
               $ref: '#/components/examples/Commune'
   schemas:
     Territoire:
-      allOf:
+      oneOf:
         - $ref: '#/components/schemas/Commune'
         - $ref: '#/components/schemas/Departement'
       discriminator:
