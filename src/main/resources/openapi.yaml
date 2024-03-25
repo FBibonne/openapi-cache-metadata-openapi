@@ -15,13 +15,17 @@ tags:
   #    description: Concepts API
   #  - name: operations
   #    description: Operations API
-  - name: geographie
-    description: Geographie API
+  - name: geoDepartement
+    description: 'API géographie : Département'
+  - name: geoCommune
+    description: 'API géographie : Commune'
+  - name: geo
+    description: 'API géographie : Générique'
 paths:
   /geo/{typeTerritoire}/{code}:
     get:
       tags:
-        - geographie
+        - geo
       summary: 'Informations sur un territoire quelqconque identifié par son type et son code'
       operationId: 'getTerritoireByTypeAndCode'
       parameters:
@@ -42,7 +46,7 @@ paths:
   /geo/departement/{code}:
     get:
       tags:
-        - geographie
+        - geoDepartement
       summary: 'Informations sur un departement identifié par son code (deux ou trois caractères)'
       operationId: 'getcogdep'
       parameters:
@@ -63,7 +67,7 @@ paths:
   /geo/departement/{code}/descendants:
     get:
       tags:
-        - geographie
+        - geoDepartement
       summary: 'Informations concernant les territoires inclus dans le departement'
       operationId: 'getcogdepdesc'
       parameters:
@@ -85,7 +89,7 @@ paths:
   /geo/communes:
     get:
       tags:
-        - geographie
+        - geoCommune
       description: |-
         Informations sur toutes les communes actives à la date donnée. Par défaut, c'est la date courante.
       operationId: 'getcogcomliste'
@@ -108,7 +112,7 @@ paths:
   /geo/commune/{code}:
     get:
       tags:
-        - geographie
+        - geoCommune
       summary: 'Informations sur une commune française identifiée par son code (cinq caractères)'
       operationId: getcogcom
       parameters:
